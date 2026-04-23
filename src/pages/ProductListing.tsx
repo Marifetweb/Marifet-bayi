@@ -45,7 +45,42 @@ const KURUMSAL_LINKS: NavLink[] = [
 
 const WHATSAPP_NUMBER = "905404614635";
 const PHONE_NUMBER = "05404614635";
-
+function ProductCardActions({ productName }: { productName: string }) {
+  const [qty, setQty] = useState(0);
+  if (qty === 0) {
+    return (
+      <button
+        type="button"
+        onClick={() => setQty(1)}
+        className="w-full inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-900 font-bold text-xs py-2 px-2 rounded-lg transition-all shadow"
+      >
+        <ShoppingCart className="w-3.5 h-3.5" />
+        Sepete Ekle
+      </button>
+    );
+  }
+  return (
+    <div className="w-full flex items-center justify-between gap-2 bg-gradient-to-r from-amber-400 to-amber-500 text-slate-900 rounded-lg p-1">
+      <button
+        type="button"
+        onClick={() => setQty(Math.max(0, qty - 1))}
+        aria-label="Azalt"
+        className="w-8 h-8 rounded-md bg-slate-900/10 hover:bg-slate-900/20 font-bold text-lg flex items-center justify-center"
+      >
+        −
+      </button>
+      <span className="font-bold text-sm">{qty}</span>
+      <button
+        type="button"
+        onClick={() => setQty(qty + 1)}
+        aria-label="Artır"
+        className="w-8 h-8 rounded-md bg-slate-900/10 hover:bg-slate-900/20 font-bold text-lg flex items-center justify-center"
+      >
+        +
+      </button>
+    </div>
+  );
+}
 export default function ProductListing() {
   const [location] = useLocation();
   const [products, setProducts] = useState<Product[]>([]);
