@@ -490,7 +490,7 @@ export default function ProductListing() {
 
                   <button
                     onClick={() => setShowFilters(!showFilters)}
-                    className="md:hidden px-4 py-3 rounded-lg border border-amber-400/30 bg-slate-800/50 text-amber-300 hover:bg-slate-800 transition-colors flex items-center gap-2"
+                    className="hidden px-4 py-3 rounded-lg border border-amber-400/30 bg-slate-800/50 text-amber-300 hover:bg-slate-800 transition-colors flex items-center gap-2"
                   >
                     <Filter className="w-4 h-4" />
                     Filtreler
