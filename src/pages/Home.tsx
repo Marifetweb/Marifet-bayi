@@ -119,8 +119,77 @@ function useCart() {
     else cur.push({ ...p, qty });
     writeCart(cur);
   };
+  const setQty = (id: number, qty: number) => {
+    const cur = readCart();
+    const idx = cur.findIndex((i) => i.id === id);
+    if (qty <= 0) {
+      if (idx >= 0) writeCart(cur.filter((i) => i.id !== id));
+      return;
+    }
+    if (idx >= 0) {
+      cur[idx].qty = qty;
+      writeCart(cur);
+    }
+  };
+  const getQty = (id: number) => items.find((i) => i.id === id)?.qty || 0;
   const count = items.reduce((s, i) => s + i.qty, 0);
-  return { items, add, count };
+  return { items, add, setQty, getQty, count };
+}
+
+/* ============================================================
+   ÜRÜN KARTI BUTON + MIKTAR (sepete bağlı)
+   ============================================================ */
+function ProductCardActions({
+  product,
+  add,
+  qty,
+  setQty,
+}: {
+  product: Product;
+  add: (p: Product, qty: number) => void;
+  qty: number;
+  setQty: (id: number, qty: number) => void;
+}) {
+  if (qty === 0) {
+    return (
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          add(product, 1);
+        }}
+        className="w-full inline-flex items-center justify-center gap-1 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white text-[11px] font-bold py-1.5 rounded-md transition shadow"
+        aria-label={`${product.urun_adi} sepete ekle`}
+      >
+        <ShoppingCart className="w-3 h-3" />
+        Sepete Ekle
+      </button>
+    );
+  }
+  return (
+    <div
+      className="w-full flex items-center justify-between gap-1 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-md p-0.5"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <button
+        type="button"
+        onClick={() => setQty(product.id, qty - 1)}
+        aria-label="Azalt"
+        className="w-7 h-7 rounded bg-white/20 hover:bg-white/30 font-bold text-base flex items-center justify-center"
+      >
+        −
+      </button>
+      <span className="font-bold text-xs">{qty}</span>
+      <button
+        type="button"
+        onClick={() => setQty(product.id, qty + 1)}
+        aria-label="Artır"
+        className="w-7 h-7 rounded bg-white/20 hover:bg-white/30 font-bold text-base flex items-center justify-center"
+      >
+        +
+      </button>
+    </div>
+  );
 }
 
 /* ============================================================
@@ -427,7 +496,7 @@ export default function Home() {
   const [kurumsalOpen, setKurumsalOpen] = useState(false);
   const [kurumsalMobileOpen, setKurumsalMobileOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const { add, count } = useCart();
+  const { add, setQty, getQty, count } = useCart();
 
   useEffect(() => {
     fetch("/products.json")
@@ -918,13 +987,10 @@ export default function Home() {
             {featured.map((p) => (
               <div
                 key={p.id}
-                className="group flex flex-col bg-white rounded-2xl border border-amber-100 overflow-hidden hover:shadow-xl transition-all hover:-translate-y-0.5"
+                onClick={() => setSelectedProduct(p)}
+                className="group flex flex-col bg-white rounded-2xl border border-amber-100 overflow-hidden hover:shadow-xl transition-all hover:-translate-y-0.5 cursor-pointer"
               >
-                <button
-                  type="button"
-                  onClick={() => setSelectedProduct(p)}
-                  className="relative aspect-square overflow-hidden bg-amber-50 block"
-                >
+                <div className="relative aspect-square overflow-hidden bg-amber-50">
                   <img
                     src={p.urun_gorseli}
                     alt={p.urun_adi}
@@ -943,15 +1009,12 @@ export default function Home() {
                       Detayları Gör
                     </span>
                   </div>
-                </button>
+                </div>
                 <div className="p-3 flex flex-col flex-1">
-                  <h3
-                    onClick={() => setSelectedProduct(p)}
-                    className="font-semibold text-xs text-slate-900 line-clamp-2 min-h-[2rem] group-hover:text-amber-800 cursor-pointer"
-                  >
+                  <h3 className="font-semibold text-xs text-slate-900 line-clamp-2 min-h-[2rem] group-hover:text-amber-800">
                     {p.urun_adi}
                   </h3>
-                  <div className="flex items-center justify-between mt-2">
+                  <div className="flex items-center justify-between mt-2 mb-2">
                     <span className="font-bold text-amber-700 text-base">
                       {p.fiyati}
                     </span>
@@ -960,14 +1023,12 @@ export default function Home() {
                       {p.rating}
                     </div>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => handleAddToCart(p, 1)}
-                    className="mt-2 inline-flex items-center justify-center gap-1 w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white text-[11px] font-bold py-1.5 rounded-md transition"
-                  >
-                    <ShoppingCart className="w-3 h-3" />
-                    Sepete Ekle
-                  </button>
+                  <ProductCardActions
+                    product={p}
+                    add={handleAddToCart}
+                    qty={getQty(p.id)}
+                    setQty={setQty}
+                  />
                 </div>
               </div>
             ))}
