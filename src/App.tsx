@@ -1,4 +1,5 @@
 import { Switch, Route } from "wouter";
+import Cart from "@/pages/Cart";
 import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/" component={Home} />
         <Route path="/katalog" component={ProductListing} />
         <Route path="/kampanyalar" component={Campaigns} />
+        <Route path="/sepet" component={Cart} />
         <Route path="/login" component={Login} />
         <Route path="/giris" component={Login} />
         <Route path="/kayit" component={Register} />
