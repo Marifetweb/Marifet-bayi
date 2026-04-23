@@ -304,7 +304,7 @@ export default function Campaigns() {
               transition={{ delay: idx * 0.07 }}
               className="group relative rounded-3xl bg-white border border-amber-100 shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col"
             >
-              <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
+              <div className="absolute top-4 left-4 right-4 flex flex-row flex-wrap gap-2 z-10">
                 {c.badge && (
                   <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider bg-amber-600 text-white px-3 py-1 rounded-full shadow">
                     <Tag className="w-3 h-3" /> {c.badge}
@@ -317,7 +317,7 @@ export default function Campaigns() {
                 )}
               </div>
 
-              <div className="bg-gradient-to-r from-amber-700 to-amber-800 text-white px-5 sm:px-6 pt-12 pb-5 sm:pb-6">
+              <div className="bg-gradient-to-r from-amber-700 to-amber-800 text-white px-5 sm:px-6 pt-16 sm:pt-12 pb-5 sm:pb-6">
                 <h2 className="font-serif font-bold text-xl sm:text-2xl leading-tight">
                   {c.title}
                 </h2>
