@@ -17,7 +17,6 @@ import {
   Percent,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import ProductDetailModal from "@/components/ProductDetailModal";
 
 interface Product {
   id: number;
