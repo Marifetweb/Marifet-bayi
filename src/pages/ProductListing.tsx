@@ -696,16 +696,6 @@ export default function ProductListing() {
               </div>
             </div>
           </main>
-
-          {selectedProduct && (
-            <ProductDetailModal
-              product={selectedProduct}
-              onClose={() => setSelectedProduct(null)}
-              isFavorite={favorites.includes(selectedProduct.id)}
-              onToggleFavorite={() => toggleFavorite(selectedProduct.id)}
-            />
-          )}
-
           <footer className="bg-slate-950/80 backdrop-blur-md border-t border-amber-400/20 mt-16">
             <div className="container py-12">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
