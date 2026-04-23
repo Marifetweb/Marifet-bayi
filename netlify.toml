@@ -5,11 +5,6 @@
 [build.environment]
   NODE_VERSION = "20"
 
-# SPA fallback — wouter client routing icin
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
 [[redirects]]
   from = "/*"
   to = "/index.html"
