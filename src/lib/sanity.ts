@@ -24,6 +24,7 @@ if (isSanityConfigured) {
 }
 
 export const sanity = _client;
+export const client = _client;
 
 const builder = _client ? imageUrlBuilder(_client) : null;
 export function urlFor(source: any): string {
